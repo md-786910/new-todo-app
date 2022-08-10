@@ -1,38 +1,87 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.googleContainer {
+  height: 80vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
 }
 
-.App-link {
-  color: #61dafb;
+.content {
+  display: flex;
+  align-items: center;
+  height: 10vh;
+}
+.googleBtn {
+  width: 20%;
+  /* max-height: 10vh; */
+  /* padding: 15px; */
+  background-color: rgb(216, 91, 91, 0.9);
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.googleImage {
+  width: 30%;
+}
+.todos {
+  margin: 5px;
+}
+.todoCard {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  border: 2px solid rgb(119, 119, 119, 0.2);
+}
+.inputText {
+  width: 30%;
+  padding: 5px;
+  border-right: 2px solid rgb(179, 105, 105);
+}
+.listTodo {
+  padding: 5px;
+  position: relative;
+  left: 10px;
+  width: 70%;
+  overflow-y: auto;
+  height: 80vh;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.todoCardItems {
+  display: flex;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: space-between;
+  /* width: 100%; */
+  background-color: rgb(212, 212, 212, 0.6);
+  padding: 5px;
+  border-radius: 5px;
+}
+.todoFans {
+  display: flex;
+  align-items: center;
+  padding-left: 4px;
+}
+
+.form-check-input {
+  height: 22px;
+  width: 22px;
+}
+
+/* write media query */
+@media screen and (max-width: 475px) {
+  .todoCard {
+    display: block;
+    width: 100%;
+    border: 10px solid rgb(119, 119, 119, 0.2);
   }
-  to {
-    transform: rotate(360deg);
+  .inputText {
+    width: 100%;
+    padding: 5px;
+    border-right: none;
+    border-bottom: 2px solid rgb(179, 105, 105);
+  }
+  .listTodo {
+    margin-top: 20px;
+    width: 100%;
   }
 }
