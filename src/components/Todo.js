@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
   addDoc,
   collection,
@@ -9,11 +9,10 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { app, database } from "../firebaseConfig";
+import { database } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 
-const Todo = (props) => {
-  // console.log(props);
+const Todo = () => {
   const navigate = useNavigate();
   const auth = getAuth();
   const [title, setTitle] = useState({

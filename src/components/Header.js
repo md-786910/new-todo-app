@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-function Header(props) {
+function Header() {
   const navigate = useNavigate();
   return (
     <>

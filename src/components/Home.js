@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
-function Home(props) {
+function Home() {
   const navigate = useNavigate();
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
