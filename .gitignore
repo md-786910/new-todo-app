@@ -4,7 +4,8 @@
 /node_modules
 /.pnp
 .pnp.js
-
+secket.txt
+.env.local
 # testing
 /coverage
 
