@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
   addDoc,
   collection,
@@ -8,16 +8,23 @@ import {
   onSnapshot,
   updateDoc,
 } from "firebase/firestore";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { app, database } from "../firebaseConfig";
+import { useNavigate } from "react-router-dom";
 
-function Todo() {
+const Todo = (props) => {
+  // console.log(props);
+  const navigate = useNavigate();
+  const auth = getAuth();
   const [title, setTitle] = useState({
     title: "",
     isCompleted: false,
   });
+  const [user, setUser] = useState([]);
   const [todos, setTodos] = useState([]);
 
-  const collectionRef = collection(database, "firebaseTodos");
+  let uid = JSON.parse(localStorage.getItem("token"));
+  let collectionRef = collection(database, uid);
 
   // handle text input
   const handleText = (e) => {
@@ -49,7 +56,7 @@ function Todo() {
     const value = e.target.value;
     const id = value;
 
-    const docRef = doc(database, "firebaseTodos", id);
+    const docRef = doc(database, uid, id);
 
     getDoc(docRef)
       .then((doc) => {
@@ -75,7 +82,7 @@ function Todo() {
 
   // delete todo
   const deleteTodo = (id) => {
-    const docDelete = doc(database, "firebaseTodos", id);
+    const docDelete = doc(database, uid, id);
     deleteDoc(docDelete)
       .then(() => {
         return;
@@ -85,14 +92,46 @@ function Todo() {
       });
   };
 
-  useEffect(() => {
+  // user logout
+  const userLogout = () => {
+    signOut(auth);
+    navigate("/");
+  };
+
+  useLayoutEffect(() => {
     onSnapshot(collectionRef, (resp) => {
       const todos = resp.docs.map((item, index) => {
         return { ...item.data(), id: item.id };
       });
       setTodos(todos);
     });
+
+    onAuthStateChanged(auth, (data) => {
+      if (data) {
+        console.log(data);
+        setUser({
+          email: data.email,
+          name: data.displayName,
+          image: data.photoURL,
+        });
+
+        if (localStorage.getItem("token") == null) {
+          localStorage.setItem("token", JSON.stringify(data.email));
+        } else {
+          const matchEmail = JSON.parse(localStorage.getItem("token"));
+
+          if (data.email === matchEmail) {
+            return;
+          } else {
+            localStorage.setItem("token", JSON.stringify(data.email));
+          }
+        }
+      } else {
+        navigate("/");
+      }
+    });
   }, []);
+
   return (
     <>
       <div className="fluid-container">
@@ -123,6 +162,22 @@ function Todo() {
             >
               Add Todos
             </button>
+
+            <div className="userData border border-2 mt-5 p-2 text-center ">
+              <img src={user.image} alt="user" />
+              <div className="displayName">
+                <h3>{user.name}</h3>
+                <h5>{user.email}</h5>
+              </div>
+
+              <div
+                className="btnLogout btn btn-success"
+                style={{ padding: "10px" }}
+                onClick={() => userLogout()}
+              >
+                logout
+              </div>
+            </div>
           </div>
           <div className="listTodo ">
             <h1>Your Todos:🔥</h1>
@@ -169,6 +224,6 @@ function Todo() {
       </div>
     </>
   );
-}
+};
 
 export default Todo;

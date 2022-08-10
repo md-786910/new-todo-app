@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
-function Home() {
+function Home(props) {
+  const navigate = useNavigate();
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
 
@@ -10,12 +13,24 @@ function Home() {
     signInWithPopup(auth, provider)
       .then((response) => {
         const resp = response.user;
-        console.log(resp);
+        // console.log(resp);
+
+        if (resp.emailVerified) {
+          navigate("/addTodo");
+        } else {
+          return;
+        }
       })
       .catch((err) => {
         alert(err.message);
       });
   };
+
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (data) => {
+  //     console.log(data);
+  //   });
+  // }, []);
 
   return (
     <>
